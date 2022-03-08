@@ -3,13 +3,9 @@ import React from 'react';
 class PokeCard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {name: this.props.name, height: 0, weight: 0, basexp: 0, imgsrc_mF: "", imgsrc_mB: "", imgsrc_sF: "", imgsrc_sB: "",
-                        maintype: "",
-                        front: true, readmore: false};
+        this.state = {name: this.props.name, height: 0, weight: 0, basexp: 0, imgsrc_mF: "", imgsrc_sF: "", maintype: ""};
 
         this.getAPIData = this.getAPIData.bind(this);
-        this.swapImages = this.swapImages.bind(this);
-        this.readMore = this.readMore.bind(this);
     }
 
     // Use async so your page can continue loading
@@ -18,18 +14,14 @@ class PokeCard extends React.Component {
         const url = this.props.url; // URL of the API
         const response = await fetch(url); // Get the data from the PokeAPI
         const responseJSON = await response.json(); // Turn the data into a JSON object that we can use
-        
+
         this.setState(
             {
                 height: responseJSON.height,
                 weight: responseJSON.weight,
                 basexp: responseJSON.base_experience,
                 imgsrc_mF: responseJSON.sprites.front_default,
-                imgsrc_mB: responseJSON.sprites.back_default,
                 imgsrc_sF: responseJSON.sprites.front_shiny,
-                imgsrc_sB: responseJSON.sprites.back_shiny,
-                imgsrc_left: responseJSON.sprites.front_default,
-                imgsrc_right: responseJSON.sprites.front_shiny,
                 maintype: responseJSON.types[0].type.name,
             }
         );
@@ -39,20 +31,9 @@ class PokeCard extends React.Component {
         this.getAPIData();
     }
 
-    swapImages() {
-        this.setState({
-            front: !this.state.front
-        });
-    }
-
-    readMore() {
-        this.props.sendData(this.state.name);
-    }
-
     render () {
         // Get the images of the pokemon
         const front_img = <div><img src={this.state.imgsrc_mF} alt={this.state.name} width={"96px"} height={"auto"}/><img src={this.state.imgsrc_sF} alt={this.state.name} width={"96px"} height={"auto"}/></div>;
-        const back_img = <div><img src={this.state.imgsrc_mB} alt={this.state.name} width={"96px"} height={"auto"}/><img src={this.state.imgsrc_sB} alt={this.state.name} width={"96px"} height={"auto"}/></div>
 
         // Get the background style
         let bg_color = {"backgroundColor": "white"};
@@ -76,26 +57,25 @@ class PokeCard extends React.Component {
             case "fairy": bg_color["backgroundColor"] = "#ffe8f9"; break;
             case "dragon": bg_color["backgroundColor"] = "#9e5ecc"; break;
             case "unknown": bg_color["backgroundColor"] = "#00000"; break;
-            case "shadow": bg_color["backgroundColor"] = "#00000"; break;        
+            case "shadow": bg_color["backgroundColor"] = "#00000"; break;
             default:
                 break;
         }
 
 
         // Card to display
-        const pokeCard = 
+        const pokeCard =
         <div className="pokecard">
-            <div onMouseOver={this.swapImages} onMouseOut={this.swapImages}>
-                {this.state.front ? front_img : back_img }
+            <div >
+                {front_img}
             </div>
             <h4>{this.state.name.charAt(0).toUpperCase() + this.state.name.slice(1)}</h4>
             <p>Height: {this.state.height}</p>
             <p>Weight: {this.state.weight}</p>
             <p>Base XP: {this.state.basexp}</p>
             <div style={bg_color} className="pokecard-type"><p>Type: {this.state.maintype.charAt(0).toUpperCase() + this.state.maintype.slice(1)}</p></div>
-            <div className="readmore" onClick={this.readMore}>Read More</div>
         </div>;
-        
+
 
         // Return some JSX here...
         return pokeCard;
