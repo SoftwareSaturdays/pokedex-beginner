@@ -1,5 +1,5 @@
 # Pokedex Project
-This is a project designed as part of the Software Saturdays Fall 2020 program. More information can be found at [Software Saturdays](https://purdueieee.org/software).
+This is a project designed as part of the Software Saturdays Spring 2021 program. More information can be found at [Software Saturdays](https://purdueieee.org/software).
 This project uses the [PokeAPI](https://pokeapi.co) to retrieve and display pokemon.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
